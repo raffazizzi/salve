@@ -660,8 +660,18 @@ The UMD build can be loaded in a CommonJS environment, in a AMD environment or
 as "plain scripts" in a browser. If you use the latter, then salve will be
 accessible as the `salve` global.
 
+Publish to NPM
+=========
+
+Do not publish from the root directory. Instead do this:
+
+* Build with `npm run build`
+* Run `npm publish` from `build/dist`
+
 Testing
 =======
+
+NB Tests are not fully up to date on this fork and will fail.
 
 Running the following command from the root of salve will run the tests::
 
