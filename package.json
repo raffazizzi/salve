@@ -1,7 +1,7 @@
 {
   "name": "salve-annos",
   "description": "A fork with support for documentation of Salve, a Javascript library which implements a validator able to validate an XML document on the basis of a subset of RelaxNG.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "versionedSources": "lib/salve/validate.ts",
   "keywords": [
     "RelaxNG",
@@ -10,21 +10,24 @@
     "XML",
     "validation"
   ],
-  "homepage": "https://github.com/mangalam-research/salve",
+  "homepage": "https://github.com/raffazizzi/salve",
   "author": "Louis-Dominique Dubeau <louisd@mangalamresearch.org>",
+  "maintainers": [
+    "Raff Viglianti <raffaeleviglianti@gmail.com>"
+  ],
   "contributors": [
+    "Raff Viglianti <raffaeleviglianti@gmail.com>",
     "Jesse Bethel <keisetsu@gmail.com>",
-    "Bennett Buchanan <buchanan.3rd@gmail.com>",
-    "Raff Viglianti <raffaeleviglianti@gmai.com>"
+    "Bennett Buchanan <buchanan.3rd@gmail.com>"
   ],
   "main": "lib/salve/validate.js",
   "browser": "./salve.min.js",
   "types": "lib/salve/validate.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mangalam-research/salve.git"
+    "url": "https://github.com/raffazizzi/salve.git"
   },
-  "bugs": "https://github.com/mangalam-research/salve/issues",
+  "bugs": "https://github.com/raffazizzi/salve/issues",
   "license": "MPL-2.0",
   "engines": {
     "node": ">=8",
