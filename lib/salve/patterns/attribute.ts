@@ -334,13 +334,15 @@ class AttributeDataWalker implements InternalWalker {
     // If canEnd is true, we've done everything we could. So we don't
     // want to match again.
     if (this.canEnd) {
-      return new InternalFireEventResult(false, undefined, undefined, this.datatype);
+      return new InternalFireEventResult(false, undefined, undefined,
+        this.datatype);
     }
 
     let value: string;
     if (this.seenName) {
       if (name !== "attributeValue") {
-        return new InternalFireEventResult(false, undefined, undefined, this.datatype);
+        return new InternalFireEventResult(false, undefined, undefined,
+          this.datatype);
       }
 
       value = params[0];
@@ -350,13 +352,15 @@ class AttributeDataWalker implements InternalWalker {
       this.seenName = true;
 
       if (name === "attributeName") {
-        return new InternalFireEventResult(true, undefined, undefined, this.datatype);
+        return new InternalFireEventResult(true, undefined, undefined,
+          this.datatype);
       }
 
       value = params[2];
     }
     else {
-      return new InternalFireEventResult(false, undefined, undefined, this.datatype);
+      return new InternalFireEventResult(false, undefined, undefined,
+        this.datatype);
     }
 
     this.canEnd = true;
@@ -367,7 +371,8 @@ class AttributeDataWalker implements InternalWalker {
                                 { resolver: nameResolver } : undefined)) {
       return new InternalFireEventResult(
         false,
-        [new AttributeValueError("invalid attribute value", this.name)], undefined, this.datatype);
+        [new AttributeValueError("invalid attribute value", this.name)],
+          undefined, this.datatype);
     }
 
     if (this.except !== undefined) {
@@ -377,7 +382,8 @@ class AttributeDataWalker implements InternalWalker {
       // False, so the except does match the text, and so this pattern does
       // not match it.
       if (exceptRet.matched) {
-        return new InternalFireEventResult(false, undefined, undefined, this.datatype);
+        return new InternalFireEventResult(false, undefined, undefined,
+          this.datatype);
       }
 
       // Otherwise, it is undefined, in which case it means the except does
@@ -386,7 +392,8 @@ class AttributeDataWalker implements InternalWalker {
       // such errors here.
     }
 
-    return new InternalFireEventResult(true, undefined, undefined, this.datatype);
+    return new InternalFireEventResult(true, undefined, undefined,
+      this.datatype);
   }
 
   endAttributes(): EndResult {

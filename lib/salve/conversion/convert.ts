@@ -66,14 +66,14 @@ export interface ConversionOptions<
    * Perform ID check. Attributes with datatype ID must be unique within the
    * document being validated.
    */
-  idCheck: boolean
+  idCheck: boolean;
 }
 
 const DEFAULT_OPTIONS: ConversionOptions<undefined> = {
   createManifest: false,
   manifestHashAlgorithm: "SHA-1",
   resourceLoader: undefined,
-  idCheck: true
+  idCheck: true,
 };
 
 /**

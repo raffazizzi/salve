@@ -124,7 +124,8 @@ export class Grammar extends BasePattern {
    *
    * @returns A walker.
    */
-  newWalker<NR extends NameResolver>(nameResolver: NR, idCheck = true): GrammarWalker<NR> {
+  newWalker<NR extends NameResolver>(nameResolver: NR, idCheck: boolean = true):
+  GrammarWalker<NR> {
     // tslint:disable-next-line:no-use-before-declare
     return GrammarWalker.make(this, nameResolver, idCheck);
   }
@@ -186,7 +187,7 @@ export class GrammarWalker<NR extends NameResolver> {
   }
 
   static make<NR extends NameResolver>(el: Grammar,
-                                       nameResolver: NR, 
+                                       nameResolver: NR,
                                        idCheck: boolean): GrammarWalker<NR> {
     return new GrammarWalker(el,
                              nameResolver,
@@ -224,18 +225,17 @@ export class GrammarWalker<NR extends NameResolver> {
    *
    * @throws {Error} When trying to process an event type unknown to salve.
    */
+  // Whitespaces are problematic. On the one hand, if an element may contain
+  // only other elements and no text, then XML allows putting whitespace
+  // between the elements. This whitespace must not cause a validation
+  // error. When mixed content is possible, everywhere where text is allowed,
+  // a text of length 0 is possible. (``<text/>`` does not allow specifying a
+  // pattern or minimum length. And Relax NG constraints do not allow having
+  // an element whose content is a mixture of ``element`` and ``data`` and
+  // ``value`` that would constrain specific text patterns between the
+  // elements.) We can satisfy all situations by dropping text events that
+  // contain only whitespace.
   fireEvent(name: string, params: string[]): FireEventResult {
-    // Whitespaces are problematic. On the one hand, if an element may contain
-    // only other elements and no text, then XML allows putting whitespace
-    // between the elements. This whitespace must not cause a validation
-    // error. When mixed content is possible, everywhere where text is allowed,
-    // a text of length 0 is possible. (``<text/>`` does not allow specifying a
-    // pattern or minimum length. And Relax NG constraints do not allow having
-    // an element whose content is a mixture of ``element`` and ``data`` and
-    // ``value`` that would constrain specific text patterns between the
-    // elements.) We can satisfy all situations by dropping text events that
-    // contain only whitespace.
-    //
     // The only case where we'd want to pass a node consisting entirely of
     // whitespace is to satisfy a data or value pattern because they can require
     // a sequence of whitespaces.
@@ -290,13 +290,13 @@ export class GrammarWalker<NR extends NameResolver> {
     if (this.idCheck && name === "attributeValue") {
       if (ret.datatype?.name === "ID") {
         if (this.idStack?.has(params[0])) {
-          return [new ValidationError(`ID "${params[0]}" has already been declared.`)]
+          return [new ValidationError(`ID "${params[0]}" has already been declared.`)];
         }
-        else {  
+        else {
           if (this.idStack) {
-            this.idStack.add(params[0])
+            this.idStack.add(params[0]);
           } else {
-            this.idStack = new Set([params[0]])
+            this.idStack = new Set([params[0]]);
           }
         }
       }

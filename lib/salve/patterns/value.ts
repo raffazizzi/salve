@@ -34,7 +34,7 @@ export class Value extends Pattern {
    * use. ``undefined`` means use the builtin library.
    *
    * @param ns The namespace in which to interpret the value.
-   * 
+   *
    * @param documentation Documentation about the value.
    */
   // tslint:disable-next-line: no-reserved-keywords
