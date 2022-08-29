@@ -124,9 +124,9 @@ export class Grammar extends BasePattern {
    *
    * @returns A walker.
    */
-  newWalker<NR extends NameResolver>(nameResolver: NR): GrammarWalker<NR> {
+  newWalker<NR extends NameResolver>(nameResolver: NR, idCheck = true): GrammarWalker<NR> {
     // tslint:disable-next-line:no-use-before-declare
-    return GrammarWalker.make(this, nameResolver);
+    return GrammarWalker.make(this, nameResolver, idCheck);
   }
 }
 
@@ -180,18 +180,23 @@ export class GrammarWalker<NR extends NameResolver> {
                       private misplacedDepth: number,
                       private _swallowAttributeValue: boolean,
                       private suspendedWs: string | undefined,
-                      private ignoreNextWs: boolean) {
+                      private ignoreNextWs: boolean,
+                      private idCheck: boolean,
+                      private idStack: Set<string> | undefined) {
   }
 
   static make<NR extends NameResolver>(el: Grammar,
-                                       nameResolver: NR): GrammarWalker<NR> {
+                                       nameResolver: NR, 
+                                       idCheck: boolean): GrammarWalker<NR> {
     return new GrammarWalker(el,
                              nameResolver,
                              [[el.start.newWalker()]],
                              0,
                              false,
                              undefined,
-                             false);
+                             false,
+                             idCheck,
+                             undefined);
   }
 
   clone(): this {
@@ -202,7 +207,9 @@ export class GrammarWalker<NR extends NameResolver> {
                              this.misplacedDepth,
                              this._swallowAttributeValue,
                              this.suspendedWs,
-                             this.ignoreNextWs) as this;
+                             this.ignoreNextWs,
+                             this.idCheck,
+                             this.idStack) as this;
   }
 
   /**
@@ -279,7 +286,21 @@ export class GrammarWalker<NR extends NameResolver> {
 
     const ret = this._fireOnCurrentWalkers(name, params);
 
-    if (name === "endTag") {
+    // Check ID
+    if (this.idCheck && name === "attributeValue") {
+      if (ret.datatype?.name === "ID") {
+        if (this.idStack?.has(params[0])) {
+          return [new ValidationError(`ID "${params[0]}" has already been declared.`)]
+        }
+        else {  
+          if (this.idStack) {
+            this.idStack.add(params[0])
+          } else {
+            this.idStack = new Set([params[0]])
+          }
+        }
+      }
+    } else if (name === "endTag") {
       // We do not need to end the walkers because the fireEvent handler
       // for elements calls end when it sees an "endTag" event.
       // We do not reduce the stack to nothing.

@@ -61,12 +61,19 @@ export interface ConversionOptions<
    * algorithm will use to load the schema and any file the schema includes.
    */
   resourceLoader: RL;
+
+  /**
+   * Perform ID check. Attributes with datatype ID must be unique within the
+   * document being validated.
+   */
+  idCheck: boolean
 }
 
 const DEFAULT_OPTIONS: ConversionOptions<undefined> = {
   createManifest: false,
   manifestHashAlgorithm: "SHA-1",
   resourceLoader: undefined,
+  idCheck: true
 };
 
 /**

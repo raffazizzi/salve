@@ -5,6 +5,7 @@
  * @copyright Mangalam Research Center for Buddhist Languages
  */
 
+import { Datatype } from "../datatypes";
 import { ValidationError } from "../errors";
 import { Events } from "../events";
 import { NameResolver } from "../name_resolver";
@@ -68,7 +69,8 @@ export type FireEventResult = false | undefined | readonly ValidationError[];
 export class InternalFireEventResult {
   constructor(readonly matched: boolean,
               readonly errors?: ReadonlyArray<ValidationError>,
-              readonly refs?: ReadonlyArray<RefWalker>) {}
+              readonly refs?: ReadonlyArray<RefWalker>,
+              readonly datatype?: Datatype) {}
 
   static fromEndResult(result: EndResult): InternalFireEventResult {
     return (result === false) ?
