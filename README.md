@@ -28,15 +28,6 @@ but salve currently has the following limitations:
   and found they do not raise errors if, for instance, a validation that expects
   a float is given a value that cannot be represented with a float.)
 
-If someone wishes to use salve but needs support for any of the features that
-are missing, they may ask for the feature to be added. Submit an issue on GitHub
-for it. If you do submit an issue to add a feature, please make a case for
-it. Even better, if someone wishes for a feature to be added, they can
-contribute code to salve that will add the feature they want. A solid
-contribution is more likely to result in the feature being speedily added to
-salve than asking for us to add the feature, and waiting until we have time for
-it.
-
 A full validation solution has the following components:
 
 * A tokenizer: responsible for recognizing XML tokens, tag names, tag
@@ -58,10 +49,11 @@ the test suite. In both cases the tokenizer function is performed by ``saxes``,
 and the parser function is performed by a parser object that ``saxes`` creates,
 customized to call salve's ``Walker.fireEvent()``.
 
-Salve has a sister library named
+The original Salve has a sister library named
 [salve-dom](https://github.com/mangalam-research/salve-dom) which uses the
 parsing facilities available in a browser to provide the tokenizer,
-well-formedness and parser components described above.
+well-formedness and parser components described above. **NB this salve-dom may not
+work with this fork of salve.**
 
 NOTE: If you are looking at the source tree of salve as cloned from GitHub, know
 that executables cannot be executed from ``bin``. They can be executed after a
@@ -742,6 +734,8 @@ also covered by the original licenses that apply to Nicolas' code.
 Credits
 =======
 
+This fork of Salve is maintained by Raff Viglianti.
+
 Salve is designed and developed by Louis-Dominique Dubeau, Director of
 Software Development for the Buddhist Translators Workbench project,
 Mangalam Research Center for Buddhist Languages.
@@ -758,8 +752,9 @@ HD-51772-13). Any views, findings, conclusions, or recommendations expressed in
 this software do not necessarily represent those of the National Endowment for
 the Humanities.
 
-[![NEH](http://www.neh.gov/files/neh_logo_horizontal_rgb.jpg)](http://www.neh.gov/)
+<img src="https://www.neh.gov/sites/default/files/inline-files/NEH-Preferred-Seal820.jpg" alt="NEH" width="250">
 
+<!--
 #  LocalWords:  fireEvent js chai semver json xmllint xsltproc npm
 #  LocalWords:  RNG minified rng XSLT xsl constructTree newWalker mk
 #  LocalWords:  xml enterStartTag uri leaveStartTag endTag nxml html
@@ -776,3 +771,4 @@ the Humanities.
 #  LocalWords:  github jison NaN baz emph lodash xregexp XRegExp ns
 #  LocalWords:  init positiveInteger NCName NameChoice superName
 #  LocalWords:  EName
+-->
