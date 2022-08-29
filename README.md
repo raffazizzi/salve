@@ -9,7 +9,7 @@ Introduction
 Salve (Schema-Aware Library for Validation and Edition) is a TypeScript library
 which implements a validator able to validate an XML document on the basis of a
 subset of Relax NG (RNG). It is developed as part of the Buddhist Translators
-Workbench. It can be seen in action in [wed](https://github.com/mangalam-research/wed).
+Workbench. It can be seen in action in the VS Code extension [Scholarly XML](https://marketplace.visualstudio.com/items?itemName=raffazizzi.sxml).
 
 Salve is used for validating XML with custom Relax NG schemas. We've also
 validated files that use the [TEI standard](http://www.tei-c.org/) and the
