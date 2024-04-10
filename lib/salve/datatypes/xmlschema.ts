@@ -507,7 +507,7 @@ abstract class Base<T> implements Datatype<T> {
       }
 
       // Is the value valid at all?
-      const invalid = prop.isInvalidParam(value, name, this);
+      const invalid = prop.isInvalidParam(value, name, this as Datatype);
       if (invalid) {
         errors.push(invalid);
       }
@@ -628,7 +628,7 @@ abstract class Base<T> implements Datatype<T> {
     const errors: ValueError[] = [];
     for (const name of paramNames) {
       const param = PARAM_NAME_TO_OBJ[name];
-      const err = param.isInvalidValue(converted, params[name], this);
+      const err = param.isInvalidValue(converted, params[name], this as any);
       if (err) {
         errors.push(err);
       }
@@ -844,14 +844,14 @@ class integer extends decimal {
     if (highestVal !== undefined) {
       const me = ret.maxExclusive;
       if (me !== undefined) {
-        if (me > highestVal) {
+        if (me as number > highestVal) {
           fail(`maxExclusive cannot be greater than ${highestVal}`);
         }
       }
       else {
         const mi = ret.maxInclusive;
         if (mi !== undefined) {
-          if (mi > highestVal) {
+          if (mi as number > highestVal) {
             fail(`maxInclusive cannot be greater than ${highestVal}`);
           }
         }
@@ -864,14 +864,14 @@ class integer extends decimal {
     if (lowestVal !== undefined) {
       const me = ret.minExclusive;
       if (me !== undefined) {
-        if (me < lowestVal) {
+        if (me as number < lowestVal) {
           fail(`minExclusive cannot be lower than ${this.lowestVal}`);
         }
       }
       else {
         const mi = ret.minInclusive;
         if (mi !== undefined) {
-          if (mi < lowestVal) {
+          if (mi as number < lowestVal) {
             fail(`minInclusive cannot be lower than ${this.lowestVal}`);
           }
         }

@@ -95,6 +95,8 @@ export interface SimplificationResult {
    * Otherwise, all files are in the array, including the initial schema file.
    */
   manifest: ManifestEntry[];
+
+  schemaText: string;
 }
 
 /** The interface that all simplifiers must follow. */

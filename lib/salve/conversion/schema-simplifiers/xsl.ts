@@ -109,9 +109,9 @@ export class XSLSimplifier extends BaseSimplifier {
 
     const originalInputDir = `${path.dirname(path.resolve(schemaPath))}/`;
 
+    const schemaText = fs.readFileSync(schemaPath).toString();
     const result =
-      await this.executeStep(originalInputDir, 0,
-                             fs.readFileSync(schemaPath).toString());
+      await this.executeStep(originalInputDir, 0, schemaText);
 
     const simplified = parseSimplifiedSchema(schemaPath, result);
     const warnings: string[] = (this.options.simplifyTo >= 18) ?
@@ -127,6 +127,7 @@ export class XSLSimplifier extends BaseSimplifier {
       simplified,
       warnings,
       manifest: [],
+      schemaText
     };
   }
 

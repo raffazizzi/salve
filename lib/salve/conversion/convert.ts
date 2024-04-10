@@ -25,6 +25,9 @@ export interface ConversionResult {
 
   /** The file manifest. Only populated if its creation was requested. */
   manifest: ManifestEntry[];
+
+  /** The text of the schema file */
+  schemaText: string;
 }
 
 export interface ConversionOptions<
@@ -106,7 +109,9 @@ Promise<ConversionResult> {
     manifestHashAlgorithm: options.manifestHashAlgorithm,
   });
 
-  const { simplified, warnings, manifest } =
+  // Read the RNG source at this point so that it can be returned as part of the retuened object
+
+  const { simplified, warnings, manifest, schemaText } =
     await simplifier.simplify(schemaPath);
 
   return {
@@ -114,5 +119,6 @@ Promise<ConversionResult> {
     simplified,
     warnings,
     manifest,
+    schemaText,
   };
 }

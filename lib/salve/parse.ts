@@ -45,7 +45,10 @@ Promise<Grammar> {
   }
 
   // Treat it as a Relax NG schema.
-  return (await convertRNGToPattern(new URL(fileUrl(rngSource)))).pattern;
+  const conversionResult = await convertRNGToPattern(new URL(fileUrl(rngSource)));
+  const schemaText = conversionResult.schemaText;
+  console.log(schemaText) // I will then be able to pass this on to a schematron validator
+  return conversionResult.pattern;
 }
 
 /**

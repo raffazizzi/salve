@@ -273,12 +273,14 @@ async function convert(result: SimplificationResult): Promise<void> {
 async function start(): Promise<void> {
   let startTime: number | undefined;
   if (args.simplified_input) {
+    const schemaText = fs.readFileSync(args.input_path).toString()
     return convert({
       simplified: parseSimplifiedSchema(
         args.input_path,
-        fs.readFileSync(args.input_path).toString()),
+        schemaText),
       warnings: [],
       manifest: [],
+      schemaText,
     });
   }
 
@@ -319,6 +321,7 @@ async function start(): Promise<void> {
       simplified,
       warnings: warnings === undefined ? [] : warnings,
       manifest: [],
+      schemaText: ""
     });
   }
 

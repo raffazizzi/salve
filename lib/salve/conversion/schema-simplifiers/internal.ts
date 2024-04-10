@@ -15,7 +15,7 @@ import { AnyName, ConcreteName, Grammar, Name, NameChoice,
          NsName } from "../../patterns";
 import * as relaxng from "../../schemas/relaxng.json";
 import { BasicParser, Element, Text, Validator } from "../parser";
-import { ResourceLoader } from "../resource-loader";
+import { Resource, ResourceLoader } from "../resource-loader";
 import { ManifestEntry, registerSimplifier, SchemaSimplifierOptions,
          SimplificationResult } from "../schema-simplification";
 import { SchemaValidationError } from "../schema-validation";
@@ -599,9 +599,7 @@ export class InternalSimplifier<RL extends ResourceLoader>
     }
   }
 
-  private async parse(filePath: URL): Promise<Element> {
-    const schemaResource = await this.options.resourceLoader.load(filePath);
-    const schemaText = await schemaResource.getText();
+  private async parse(filePath: URL, schemaResource: Resource, schemaText: string): Promise<Element> {
     const fileName = filePath.toString();
     const saxesParser = new SaxesParser({ xmlns: true,
                                           position: false,
@@ -676,6 +674,9 @@ export class InternalSimplifier<RL extends ResourceLoader>
   }
 
   async simplify(schemaPath: URL): Promise<SimplificationResult> {
+    const schemaResource = await this.options.resourceLoader.load(schemaPath);
+    const schemaText = await schemaResource.getText();
+
     let startTime: number | undefined;
     if (this.options.verbose) {
       // tslint:disable-next-line:no-console
@@ -690,7 +691,7 @@ export class InternalSimplifier<RL extends ResourceLoader>
 
     if (this.options.simplifyTo >= 1) {
       this.stepStart(1);
-      tree = await this.parse(schemaPath);
+      tree = await this.parse(schemaPath, schemaResource, schemaText);
       tree = await simplifier.step1(schemaPath, tree, this.parse.bind(this));
     }
 
@@ -764,6 +765,7 @@ export class InternalSimplifier<RL extends ResourceLoader>
       simplified: tree,
       warnings,
       manifest: await Promise.all(this.manifestPromises),
+      schemaText
     };
   }
 }
