@@ -4,12 +4,10 @@
 
 const nodeFetch = require("node-fetch");
 const { URL } = require("url");
-const crypto = require("@trust/webcrypto");
 const util = require("util");
 
 global.fetch = nodeFetch;
 global.URL = URL;
-global.crypto = crypto;
 global.TextEncoder = util.TextEncoder;
 
 const fs = require("fs");

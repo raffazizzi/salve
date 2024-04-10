@@ -4,7 +4,6 @@
  * @license MPL 2.0
  * @copyright Mangalam Research Center for Buddhist Languages
  */
-import * as crypto from "@trust/webcrypto";
 import { ArgumentParser } from "argparse";
 import * as fs from "fs";
 import * as nodeFetch from "node-fetch";
@@ -18,7 +17,6 @@ import fileUrl from "file-url";
 
 (global as any).fetch = nodeFetch;
 (global as any).URL = URL;
-(global as any).crypto = crypto;
 (global as any).TextEncoder = util.TextEncoder;
 
 // We load individual modules rather than the build module because the
@@ -309,7 +307,7 @@ async function start(): Promise<void> {
     });
 
     ({ simplified, warnings } =
-     await validator.validate(new URL(fileUrl(args.input_path))));
+     await validator.validate(new URL(fileUrl(args.input_path)) as unknown as globalThis.URL));
 
     if (args.timing) {
       console.log(`Validation delta: ${Date.now() - startTime!}`);
@@ -337,7 +335,7 @@ async function start(): Promise<void> {
     manifestHashAlgorithm: "void",
   });
 
-  return simplifier.simplify(new URL(fileUrl(args.input_path))).then(convert);
+  return simplifier.simplify(new URL(fileUrl(args.input_path)) as unknown as globalThis.URL).then(convert);
 }
 
 // tslint:disable-next-line:no-floating-promises
