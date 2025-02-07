@@ -80,7 +80,7 @@ const options = parser.parseArgs(process.argv.slice(2));
 
 function runTsc(tsconfigPath, dest) {
   return execFileAndReport("./node_modules/.bin/tsc", ["-p", tsconfigPath,
-                                                       "--outDir", dest]);
+                                                       "--outDir", dest], { shell: true });
 }
 
 function runTslint(tsconfig, tslintConfig) {
@@ -175,7 +175,7 @@ gulp.task("convert-schema",
           .then(() => execFileAndReport(
             "./build/dist/bin/salve-convert",
             ["--validator=none", "lib/salve/schemas/relaxng.rng",
-             "build/dist/lib/salve/schemas/relaxng.json"])));
+             "build/dist/lib/salve/schemas/relaxng.json"], { shell: true })));
 
 gulp.task("default", gulp.series(gulp.parallel(tsc, "copy"),
                                  "convert-schema",

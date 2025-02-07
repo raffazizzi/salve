@@ -16,7 +16,6 @@
     "sourceMap": true,
     "inlineSources": true,
     "strictNullChecks": true,
-    "importHelpers": true,
     "target": "es6",
     "lib": ["es2016", "dom"]
   },
