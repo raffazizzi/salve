@@ -165,7 +165,8 @@ gulp.task("copy", gulp.series(copySrc,
 gulp.task("convert-schema",
           // We have to create the directory before converting.
           () => execFileAndReport("mkdir", ["-p",
-                                            "build/dist/lib/salve/schemas/"])
+                                            "build/dist/lib/salve/schemas/",
+                                            { recursive: true }])
           // We have to write an empty file so that salve-convert will at least
           // not crash due to the file being missing.
           .then(() => fs.writeFileAsync(
