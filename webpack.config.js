@@ -51,8 +51,8 @@ module.exports = {
   },
   plugins: [
     // We drop from the bundle everything that is Node-dependent.
-    new webpack.IgnorePlugin({resourceRegExp: /\/resource-loaders\/node$/}),
-    new webpack.IgnorePlugin({resourceRegExp: /\.\/xsl$/, contextRegExp: /schema-simplifiers$/}),
-    new webpack.IgnorePlugin({resourceRegExp: /\.\/(?:jing|xmllint)$/, contextRegExp: /schema-validators$/}),
+    new webpack.IgnorePlugin({ resourceRegExp: /\/resource-loaders\/node$/ }),
+    new webpack.IgnorePlugin({ resourceRegExp: /\.\/xsl$/, contextRegExp: /schema-simplifiers$/ }),
+    new webpack.IgnorePlugin({ resourceRegExp: /\.\/(?:jing|xmllint)$/, contextRegExp: /schema-validators$/ }),
   ],
 };

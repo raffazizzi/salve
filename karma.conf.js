@@ -5,7 +5,7 @@ let localConfig = {
   browserStack: {},
 };
 try {
-  // eslint-disable-next-line import/no-unresolved, global-require
+  // eslint-disable-next-line import/no-unresolved, global-require, import/extensions
   localConfig = require("./localConfig");
 }
 catch (ex) {} // eslint-disable-line no-empty
