@@ -82,12 +82,12 @@ process.on("unhandledRejection", ex => {
 //
 
 const parser = new ArgumentParser({
-  addHelp: true,
+  add_help: true,
   description: "Converts a simplified RNG file to a JavaScript file " +
     "that salve can use.",
 });
 
-parser.addArgument(["--version"], {
+parser.add_argument("--version", {
   help: "Show program's version number and exit.",
   action: "version",
   version,
@@ -98,10 +98,10 @@ if (!availableSimplifiers.includes("internal")) {
   throw new Fatal("internal must be among the available validators");
 }
 
-parser.addArgument(["--simplifier"], {
+parser.add_argument("--simplifier", {
   help: "Select the schema simplifier.",
   choices: availableSimplifiers,
-  defaultValue: "internal",
+  default: "internal",
 });
 
 const availableValidators = getAvailableValidators();
@@ -110,84 +110,84 @@ if (!availableValidators.includes("internal")) {
 }
 availableValidators.push("none");
 
-parser.addArgument(["--validator"], {
+parser.add_argument("--validator", {
   help: "Select how the schema is going to be validated.",
   choices: availableValidators,
-  defaultValue: "internal",
+  default: "internal",
 });
 
-parser.addArgument(["--no-optimize-ids"], {
+parser.add_argument("--no-optimize-ids", {
   help: "Do NOT optimize the identifiers used by references and definitions.",
   action: "storeTrue",
 });
 
-parser.addArgument(["--include-paths"], {
+parser.add_argument("--include-paths", {
   help: "Include RNG node path information in the JavaScript file.",
   action: "storeTrue",
 });
 
-parser.addArgument(["--format-version"], {
+parser.add_argument("--format-version", {
   help: "Version number of the JavaScript format that the tool must produce.",
   type: Number,
-  defaultValue: 3,
+  default: 3,
 });
 
-parser.addArgument(["--simplify-only"], {
+parser.add_argument("--simplify-only", {
   help: "Stop converting at the simplification stage.",
   action: "storeTrue",
 });
 
-parser.addArgument(["--simplify-to"], {
+parser.add_argument("--simplify-to", {
   help: "Simplify only to a specific stage, inclusively. (Note that pipelines \
 may not be able to stop at all stages.) This is mainly useful for debugging. \
 Implies ``--simplify-only``.",
   type: Number,
-  defaultValue: Infinity,
+  default: Infinity,
 });
 
-parser.addArgument(["--no-output"], {
+parser.add_argument("--no-output", {
   help: "Skip producing any output. This may be useful for debugging.",
   action: "storeTrue",
 });
 
-parser.addArgument(["--simplified-input"], {
+parser.add_argument("--simplified-input", {
   help: "The input is as simplified RNG.",
   action: "storeTrue",
 });
 
-parser.addArgument(["--keep-temp"], {
+parser.add_argument("--keep-temp", {
   help: "Keep the temporary files around. Useful for diagnosis.",
   action: "storeTrue",
 });
 
-parser.addArgument(["-v", "--verbose"], {
+parser.add_argument("--verbose", {
   help: "Run verbosely.",
   action: "storeTrue",
 });
 
-parser.addArgument(["--timing"], {
+parser.add_argument("--timing", {
   help: "Output timing information. Implies --verbose.",
   action: "storeTrue",
 });
 
-parser.addArgument(["--verbose-format"], {
+parser.add_argument("--verbose-format", {
   help: `Outputs a verbose version of the data, with actual class names \
 instead of numbers. Implies --no-optimize-ids. This format is cannot \
 be read by salve. It is meant for debugging purposes only.`,
   action: "storeTrue",
 });
 
-parser.addArgument(["--allow-incomplete-types"], {
+parser.add_argument("--allow-incomplete-types", {
   help: `Without this flag, the conversion process will stop upon \
 encountering types that are not fully supported. Using this flag will \
 allow the conversion to happen. Use --allow-incomplete-types=quiet to \
 suppress all warnings about this.`,
 });
 
-parser.addArgument(["input_path"]);
-parser.addArgument(["output_path"]);
+parser.add_argument("input_path");
+parser.add_argument("output_path");
 
-args = parser.parseArgs();
+args = parser.parse_args();
 
 if (args.timing) {
   args.verbose = true;

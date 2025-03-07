@@ -4,6 +4,7 @@
  * @license MPL 2.0
  * @copyright 2013, 2014 Mangalam Research Center for Buddhist Languages
  */
+import { SaxesAttributeNS } from "saxes";
 import { Element, isElement, Text } from "../parser";
 import { SchemaValidationError } from "../schema-validation";
 import { findMultiDescendantsByLocalName, getName, groupBy,
@@ -49,7 +50,7 @@ class Step1 {
     const attrs = el.getRawAttributes();
     let baseAttr: string | undefined;
     for (const name of Object.keys(attrs)) {
-      const attr = attrs[name];
+      const attr = attrs[name] as SaxesAttributeNS;
       const { uri, prefix } = attr;
       if (name !== "xmlns" && uri !== "" && prefix !== "xmlns") {
         if (name === "xml:base") {

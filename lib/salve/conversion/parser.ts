@@ -5,7 +5,7 @@
  * @copyright Mangalam Research Center for Buddhist Languages
  */
 
-import { SaxesAttribute, SaxesParser, SaxesTag } from "saxes";
+import { SaxesAttribute, SaxesAttributeNS, SaxesParser, SaxesTag } from "saxes";
 
 import { EName } from "../ename";
 import { ValidationError } from "../errors";
@@ -79,10 +79,10 @@ export class Element {
   static fromSax(node: SaxesTag, children: ConcreteNode[],
                  documentation: string = ""): Element {
     return new Element(
-      node.prefix,
-      node.local,
-      node.uri,
-      node.ns,
+      node.prefix || "",
+      node.local || "",
+      node.uri || "",
+      node.ns || {},
       node.attributes as Record<string, SaxesAttribute>,
       documentation,
       children);
@@ -503,11 +503,11 @@ export class Validator implements ValidatorI {
     // a bunch of times.
     // tslint:disable-next-line:prefer-array-literal
     const params: string[] = new Array(2 + keys.length);
-    params[0] = node.uri;
-    params[1] = node.local;
+    params[0] = node.uri || "";
+    params[1] = node.local || "";
     let ix = 2;
     for (const name of keys) {
-      const { uri, local, value } = attributes[name] as SaxesAttribute;
+      const { uri, local, value } = attributes[name] as SaxesAttributeNS;
       // Skip XML namespace declarations
       if (uri !== XMLNS_NAMESPACE) {
         params[ix++] = uri;
@@ -519,7 +519,7 @@ export class Validator implements ValidatorI {
   }
 
   onclosetag(node: SaxesTag): void {
-    this.fireEvent("endTag", [node.uri, node.local]);
+    this.fireEvent("endTag", [node.uri || "", node.local || ""]);
   }
 
   ontext(text: string): void {
@@ -571,10 +571,10 @@ export class BasicParser {
 
   constructor(readonly saxesParser: SaxesParser,
               protected readonly validator: ValidatorI = new NullValidator()) {
-    saxesParser.onopentag = this.onopentag.bind(this);
-    saxesParser.onclosetag = this.onclosetag.bind(this);
-    saxesParser.ontext = this.ontext.bind(this);
-    saxesParser.onend = this.onend.bind(this);
+    saxesParser.on("opentag", this.onopentag.bind(this));
+    saxesParser.on("closetag", this.onclosetag.bind(this));
+    saxesParser.on("text", this.ontext.bind(this));
+    saxesParser.on("end", this.onend.bind(this));
     this.stack = [{
       // We cheat. The node field of the top level stack item won't ever be
       // accessed.
@@ -745,7 +745,7 @@ class Found extends Error {
 
 class IncludeParser {
   constructor(readonly saxesParser: SaxesParser) {
-    saxesParser.onopentag = this.onopentag.bind(this);
+    saxesParser.on("opentag", this.onopentag.bind(this));
   }
 
   onopentag(node: SaxesTag): void {

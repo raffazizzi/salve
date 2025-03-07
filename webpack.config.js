@@ -45,8 +45,7 @@ module.exports = {
     minimizer: [new TerserPlugin({
       terserOptions: {
         safari10: true,
-      },
-      sourceMap: true,
+      }
     })],
   },
   plugins: [

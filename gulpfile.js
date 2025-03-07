@@ -40,43 +40,41 @@ catch (e) {
   }
 }
 
-const parser = new ArgumentParser({ addHelp: true });
+const parser = new ArgumentParser({ add_help: true });
 
 // We have this here so that the help message is more useful than
 // without. At the same time, this positional argument is not
 // *required*.
-parser.addArgument(["target"], {
+parser.add_argument("target", {
   help: "Target to execute.",
   nargs: "?",
-  defaultValue: "default",
+  default: "default",
 });
 
-parser.addArgument(["--doc-private"], {
+parser.add_argument("--doc-private", {
   help: "document private functions.",
-  type: Boolean,
-  action: "storeTrue",
-  defaultValue: localConfig.doc_private,
+  action: "store_true",
+  default: localConfig.doc_private,
 });
 
-parser.addArgument(["--no-doc-private"], {
+parser.add_argument("--no-doc-private", {
   help: "do not document private functions.",
-  type: Boolean,
-  action: "storeFalse",
+  action: "store_false",
   dest: "doc_private",
-  defaultValue: localConfig.doc_private,
+  default: localConfig.doc_private,
 });
 
-parser.addArgument(["--mocha-grep"], {
+parser.add_argument("--mocha-grep", {
   // We do not have a default for this one.
   help: "A pattern to pass to mocha to select tests.",
 });
 
-parser.addArgument(["--browsers"], {
+parser.add_argument(["--browsers"], {
   help: "The list of browsers to use for Karma.",
   nargs: "+",
 });
 
-const options = parser.parseArgs(process.argv.slice(2));
+const options = parser.parse_args(process.argv.slice(2));
 
 function runTsc(tsconfigPath, dest) {
   return execFileAndReport("./node_modules/.bin/tsc", ["-p", tsconfigPath,
@@ -165,8 +163,7 @@ gulp.task("copy", gulp.series(copySrc,
 gulp.task("convert-schema",
           // We have to create the directory before converting.
           () => execFileAndReport("mkdir", ["-p",
-                                            "build/dist/lib/salve/schemas/",
-                                            { recursive: true }])
+                                            "build/dist/lib/salve/schemas/"])
           // We have to write an empty file so that salve-convert will at least
           // not crash due to the file being missing.
           .then(() => fs.writeFileAsync(

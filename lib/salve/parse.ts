@@ -8,7 +8,7 @@
 import fileUrl from "file-url";
 import * as fs from "fs";
 import * as path from "path";
-import { SaxesAttribute, SaxesParser, SaxesTag } from "saxes";
+import { SaxesAttributeNS, SaxesParser, SaxesTag } from "saxes";
 
 import { convertRNGToPattern, DefaultNameResolver, Grammar,
          readTreeFromJSON } from "./validate";
@@ -104,14 +104,14 @@ export async function parse(rngSource: string | Grammar,
     }
   }
 
-  parser.onopentag = (node: SaxesTag) => {
+  parser.on("opentag", (node: SaxesTag) => {
     flushTextBuf();
     const names = Object.keys(node.attributes);
     const nsDefinitions = [];
     const attributeEvents = [];
     names.sort();
     for (const name of names) {
-      const attr = node.attributes[name] as SaxesAttribute;
+      const attr = node.attributes[name] as SaxesAttributeNS;
       if (name === "xmlns") { // xmlns="..."
         nsDefinitions.push(["", attr.value]);
       }
@@ -135,17 +135,17 @@ export async function parse(rngSource: string | Grammar,
     }
     fireEvent("leaveStartTag", []);
     tagStack.push({
-      uri: node.uri,
-      local: node.local,
+      uri: node.uri || "",
+      local: node.local || "",
       hasContext: nsDefinitions.length !== 0,
     });
-  };
+  });
 
-  parser.ontext = (text: string) => {
+  parser.on("text", (text: string) => {
     textBuf += text;
-  };
+  });
 
-  parser.onclosetag = () => {
+  parser.on("closetag", () => {
     flushTextBuf();
     const tagInfo = tagStack.pop();
     if (tagInfo === undefined) {
@@ -155,11 +155,11 @@ export async function parse(rngSource: string | Grammar,
     if (tagInfo.hasContext) {
       nameResolver.leaveContext();
     }
-  };
+  });
 
   const entityRe = /^<!ENTITY\s+([^\s]+)\s+(['"])(.*?)\2\s*>\s*/;
 
-  parser.ondoctype = (doctype: string) => {
+  parser.on("doctype", (doctype: string) => {
     // This is an extremely primitive way to handle ENTITY declarations in a
     // DOCTYPE. It is unlikely to support any kind of complicated construct.
     // If a reminder need be given then: THIS PARSER IS NOT MEANT TO BE A
@@ -188,9 +188,9 @@ export async function parse(rngSource: string | Grammar,
     }
 
     console.log(doctype);
-  };
+  });
 
-  parser.onend = () => {
+  parser.on("end", () => {
     const result = walker.end();
     if (result !== false) {
       error = true;
@@ -201,7 +201,7 @@ export async function parse(rngSource: string | Grammar,
         }
       }
     }
-  };
+  });
 
   parser.write(xmlSource).close();
 
