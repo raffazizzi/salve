@@ -1,7 +1,7 @@
 {
   "name": "salve-annos",
   "description": "A fork with support for documentation of Salve, a Javascript library which implements a validator able to validate an XML document on the basis of a subset of RelaxNG.",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "versionedSources": "lib/salve/validate.ts",
   "keywords": [
     "RelaxNG",
